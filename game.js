@@ -3,17 +3,17 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const playerImg = new Image();
-playerImg.src = 'images/perso.png';
+playerImg.src = 'perso.png';
 const diplomaImg = new Image();
-diplomaImg.src = 'images/icone.png';
+diplomaImg.src = 'icone.png';
 
 // NOUVEAU: Image du gain (le goûter)
 const gainImg = new Image();
-gainImg.src = 'images/gain.png'; // Assurez-vous que cette image est disponible
+gainImg.src = 'gain.png'; // Assurez-vous que cette image est disponible
 
 // NOUVEAU: Image pour l'objet "mambz"
 const mambzImg = new Image();
-mambzImg.src = 'images/mambz.png'; // ASSUMEZ que vous avez une image 'mambz.png'
+mambzImg.src = 'mambz.png'; // ASSUMEZ que vous avez une image 'mambz.png'
 
 // Vérification de la disponibilité du canvas et du contexte
 if (!canvas || !ctx) {
@@ -324,4 +324,5 @@ setInterval(spawnMambz, 3000);    // NOUVEAU: Fait apparaître un Mambz toutes l
 
 // Lancement de la boucle principale du jeu
 // gameLoop() est maintenant appelée sans argument initial, performance.now() est géré par requestAnimationFrame
+
 requestAnimationFrame(gameLoop);
