@@ -11,9 +11,9 @@ diplomaImg.src = 'images/icone.png';
 const gainImg = new Image();
 gainImg.src = 'images/gain.png'; 
 
-// Image pour l'objet "mambz"
-const mambzImg = new Image();
-mambzImg.src = 'images/MAMBZ.png'; 
+// Image pour l'objet "MAMBZ"
+const MAMBZImg = new Image();
+MAMBZImg.src = 'images/MAMBZ.png'; 
 
 // Vérification de la disponibilité du canvas et du contexte
 if (!canvas || !ctx) {
@@ -348,4 +348,5 @@ imagesToLoad.forEach(img => {
         };
     }
 });
+
 
