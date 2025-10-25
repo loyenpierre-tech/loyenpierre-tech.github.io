@@ -55,7 +55,7 @@ let player = {
 
 let diplomas = []; 
 let arrows = [];   
-let mambzItems = []; 
+let MAMBZItems = []; 
 
 // --- GESTION DU PERSONNAGE (Mouvement et Saut) ---
 
@@ -112,13 +112,13 @@ function spawnDiploma() {
     });
 }
 
-function spawnMambz() {
-    mambzItems.push({
+function spawnMAMBZ() {
+    MAMBZItems.push({
         x: canvas.width,
         y: Math.random() * (canvas.height / 2) + 50,
         width: 200, 
         height: 200,
-        type: 'mambz'
+        type: 'MAMBZ'
     });
 }
 
@@ -156,11 +156,11 @@ function drawObjects(array) {
         } else if (obj.type === 'diploma' && diplomaImg.complete) {
             ctx.drawImage(diplomaImg, obj.x, obj.y, obj.width, obj.height);
         // DESSIN DES MAMBZ (Image)
-        } else if (obj.type === 'mambz' && mambzImg.complete) {
-            ctx.drawImage(mambzImg, obj.x, obj.y, obj.width, obj.height);
+        } else if (obj.type === 'MAMBZ' && MAMBZImg.complete) {
+            ctx.drawImage(MAMBZImg, obj.x, obj.y, obj.width, obj.height);
         } else {
-            // Option de secours pour les diplômes/mambz si l'image ne charge pas
-            ctx.fillStyle = obj.type === 'mambz' ? 'orange' : 'yellow'; 
+            // Option de secours pour les diplômes/MAMBZ si l'image ne charge pas
+            ctx.fillStyle = obj.type === 'MAMBZ' ? 'orange' : 'yellow'; 
             ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
         }
     });
@@ -197,11 +197,11 @@ function handleCollisions() {
         }
     }
 
-    // Collisions avec les Mambz (Gain de 3 points)
-    for (let i = mambzItems.length - 1; i >= 0; i--) {
-        if (checkCollision(player, mambzItems[i])) {
+    // Collisions avec les MAMBZ (Gain de 3 points)
+    for (let i = MAMBZItems.length - 1; i >= 0; i--) {
+        if (checkCollision(player, MAMBZItems[i])) {
             addScoreAndCheckReward(MAMBZ_SCORE_VALUE); 
-            mambzItems.splice(i, 1);
+            MAMBZItems.splice(i, 1);
         }
     }
 
@@ -233,16 +233,16 @@ function gameLoop(currentTime) {
     ctx.fillStyle = 'green'; 
     ctx.fillRect(0, GROUND_Y, canvas.width, canvas.height - GROUND_Y);
 
-    // 2. Mettre à jour les positions (joueur, diplômes, mambz, flèches)
+    // 2. Mettre à jour les positions (joueur, diplômes, MAMBZ, flèches)
     updatePlayer();
     updateObjects(diplomas, DIPLOMA_SPEED);
-    updateObjects(mambzItems, MAMBZ_SPEED); 
+    updateObjects(MAMBZItems, MAMBZ_SPEED); 
     updateObjects(arrows, ARROW_SPEED);
 
     // 3. Dessiner tous les éléments
     drawPlayer();
     drawObjects(diplomas);
-    drawObjects(mambzItems); 
+    drawObjects(MAMBZItems); 
     drawObjects(arrows);
 
     // 4. Vérifier les interactions
@@ -311,7 +311,7 @@ document.addEventListener('keyup', (e) => {
 // --- CORRECTION: INITIALISATION AVEC PRÉCHARGEMENT DES IMAGES ---
 // ====================================================================
 
-const imagesToLoad = [playerImg, diplomaImg, gainImg, mambzImg]; 
+const imagesToLoad = [playerImg, diplomaImg, gainImg, MAMBZImg]; 
 let imagesLoadedCount = 0;
 
 function imageLoaded() {
@@ -327,7 +327,7 @@ function startGame() {
     // Génération aléatoire des objets
     setInterval(spawnDiploma, 2000); 
     setInterval(spawnArrow, 1500);    
-    setInterval(spawnMambz, 3000);    
+    setInterval(spawnMAMBZ, 3000);    
 
     // Lancement de la boucle principale du jeu
     requestAnimationFrame(gameLoop);
@@ -348,5 +348,6 @@ imagesToLoad.forEach(img => {
         };
     }
 });
+
 
 
