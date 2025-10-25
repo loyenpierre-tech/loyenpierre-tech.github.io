@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+    <title> Formation </title>
+    <link rel="icon" type="image/png" href="images/icone.png">
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+<main>
+
+    <h1>
+        FORMATION PIERRE LOYEN
+    </h1>
+
+    <a 
+        href="images\test.png">
+        <img src="images/test.png" alt="une image de test">
+    </a>
+
+    <div class="conteneur-boutons">
+
+        <a
+            href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_blank">
+            AU SECOURS !!!
+        </a>
+    
+        <a
+            href="https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3" class="bouton-help" target="_self">
+            Openclassroom
+        </a>
+    
+        <a 
+            href="Page2.html" class="bouton-help" target="_self">
+            C'est la récré
+        </a>
+   
+        <a
+            href="https://www.google.com/imgres?q=image%20golum&imgurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fb6%2Fba%2F04%2Fb6ba0418eb64c303510fef0f287d3f11.jpg&imgrefurl=https%3A%2F%2Ffr.pinterest.com%2Ffrancisballestr%2Fgolum%2F&docid=hDT1bKTgGtnOYM&tbnid=S4gZ-hfO4lym4M&vet=12ahUKEwjn96u7lLuQAxUFKvsDHXzKKYQQM3oECBsQAA..i&w=668&h=995&hcb=2&ved=2ahUKEwjn96u7lLuQAxUFKvsDHXzKKYQQM3oECBsQAA" class="bouton-help" target="_self">
+            Golum
+        </a>
+    
+    </div>
+   
+    <p 
+        id="paragraphe-smiley" onclick=changerSmiley()>😊 heureux
+    </p>
+    
+    <p 
+        id="paragraphe-main"> 
+           
+        <p> 
+            dum oriens diu perferret, caeli reserato tepore Constantius consulatu suo septies et Caesaris ter egressus Arelate Valentiam petit, in Gundomadum et Vadomarium fratres Alamannorum reges arma moturus, quorum crebris excursibus vastabantur confines limitibus terrae Gallorum.
+        </p> 
+        
+        <P>
+            Nec minus feminae quoque calamitatum participes fuere similium. nam ex hoc quoque sexu peremptae sunt originis altae conplures, adulteriorum flagitiis obnoxiae vel stuprorum. inter quas notiores fuere Claritas et Flaviana, quarum altera cum duceretur ad mortem, indumento, quo vestita erat, abrepto, ne velemen quidem secreto membrorum sufficiens retinere permissa est. ideoque carnifex nefas admisisse convictus inmane, vivus exustus est.
+        </p> 
+        <p>
+            Quibus ita sceleste patratis Paulus cruore perfusus reversusque ad principis castra multos coopertos paene catenis adduxit in squalorem deiectos atque maestitiam, quorum adventu intendebantur eculei uncosque parabat carnifex et tormenta. et ex is proscripti sunt plures actique in exilium alii, non nullos gladii consumpsere poenales. nec enim quisquam facile meminit sub Constantio, ubi susurro tenus haec movebantur, quemquam absolutum.
+        </p>    
+            Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.
+         <p>   
+            Fuerit toto in consulatu sine provincia, cui fuerit, antequam designatus est, decreta provincia. Sortietur an non? Nam et non sortiri absurdum est, et, quod sortitus sis, non habere. Proficiscetur paludatus? Quo? Quo pervenire ante certam diem non licebit. ianuario, Februario, provinciam non habebit; Kalendis ei denique Martiis nascetur repente provincia.
+    </p>
+    <select
+        id="ingredient" class="Style-Select">
+        <option disabled selected>deroule ici</option> <option>citron</option>
+        <option>sel</option>
+        <option>poivre</option>
+        <option>cafe</option>
+    </select>
+
+    <select
+        id="suite"class="Style-Select">
+        <option disabled selected>fais ton choix</otpion>
+        <option>123</option>
+        <option>456</option>
+        <option>789</option>
+    </select>
+
+    <script>
+    // 1. Fonction pour le smiley : change entre heureux et triste
+        function changerSmiley() {
+        const paragraphe = document.getElementById('paragraphe-smiley');
+        let contenu = paragraphe.innerHTML;
+        // Vérifie si le contenu contient le smiley heureux (😊)
+        if (contenu.includes('😊 heureux')) {
+            // Si oui, le remplace par le smiley triste (😢)
+            paragraphe.innerHTML = contenu.replace('😊 heureux', '😢 triste');
+        } else  {
+            // Sinon (s'il est déjà triste), le remplace par le smiley heureux (😊)
+            paragraphe.innerHTML = contenu.replace('😢 triste', '😊 heureux');
+        }
+        }
+    </script>
+    </main>
+    <footer>
+
+        <a
+            href="https://www.facebook.com" class="mentions-legales" target="=_self">
+            Pierre LOYEN
+        </a>
+
+        <p>
+            copyright 2025
+        </p>
+    </footer>
+
+</body>
+</html>
