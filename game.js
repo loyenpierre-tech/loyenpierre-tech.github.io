@@ -3,17 +3,17 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const playerImg = new Image();
-playerImg.src = 'perso.png';
+playerImg.src = 'images/perso.png';
 const diplomaImg = new Image();
-diplomaImg.src = 'icone.png';
+diplomaImg.src = 'images/icone.png';
 
 // NOUVEAU: Image du gain (le goûter)
 const gainImg = new Image();
-gainImg.src = 'gain.png'; // Assurez-vous que cette image est disponible
+gainImg.src = 'images/gain.png'; // Assurez-vous que cette image est disponible
 
 // NOUVEAU: Image pour l'objet "mambz"
 const mambzImg = new Image();
-mambzImg.src = 'mambz.png'; // ASSUMEZ que vous avez une image 'mambz.png'
+mambzImg.src = 'images/mambz.png'; // ASSUMEZ que vous avez une image 'mambz.png'
 
 // Vérification de la disponibilité du canvas et du contexte
 if (!canvas || !ctx) {
@@ -317,14 +317,11 @@ document.addEventListener('keyup', (e) => {
 
 // --- INITIALISATION : DÉMARRAGE DU JEU ---
 
-setInterval(spawnMambz, 30000);// Génération aléatoire des objets
-setInterval(spawnDiploma, 20000); // NOTE : Revert aux valeurs de l'utilisateur (2000ms)
-setInterval(spawnArrow, 15000);    // NOTE : Revert aux valeurs de l'utilisateur (1500ms)
-    // NOUVEAU: Fait apparaître un Mambz toutes les 4 secondes (ajustez si besoin)
+// Génération aléatoire des objets
+setInterval(spawnDiploma, 2000); // NOTE : Revert aux valeurs de l'utilisateur (2000ms)
+setInterval(spawnArrow, 1500);    // NOTE : Revert aux valeurs de l'utilisateur (1500ms)
+setInterval(spawnMambz, 3000);    // NOUVEAU: Fait apparaître un Mambz toutes les 4 secondes (ajustez si besoin)
 
 // Lancement de la boucle principale du jeu
 // gameLoop() est maintenant appelée sans argument initial, performance.now() est géré par requestAnimationFrame
-
 requestAnimationFrame(gameLoop);
-
-
