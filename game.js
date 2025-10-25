@@ -317,13 +317,14 @@ document.addEventListener('keyup', (e) => {
 
 // --- INITIALISATION : DÉMARRAGE DU JEU ---
 
-// Génération aléatoire des objets
+setInterval(spawnMambz, 30000);// Génération aléatoire des objets
 setInterval(spawnDiploma, 20000); // NOTE : Revert aux valeurs de l'utilisateur (2000ms)
 setInterval(spawnArrow, 15000);    // NOTE : Revert aux valeurs de l'utilisateur (1500ms)
-setInterval(spawnMambz, 30000);    // NOUVEAU: Fait apparaître un Mambz toutes les 4 secondes (ajustez si besoin)
+    // NOUVEAU: Fait apparaître un Mambz toutes les 4 secondes (ajustez si besoin)
 
 // Lancement de la boucle principale du jeu
 // gameLoop() est maintenant appelée sans argument initial, performance.now() est géré par requestAnimationFrame
 
 requestAnimationFrame(gameLoop);
+
 
