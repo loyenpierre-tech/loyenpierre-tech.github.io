@@ -1,46 +1,80 @@
 // game.js
 const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 const scoreDisplay = document.getElementById('scoreDisplay');
-const playerImg = new Image();
-playerImg.src = 'images/perso.png';
-const diplomaImg = new Image();
-diplomaImg.src = 'images/icone.png';
 
-// NOUVEAU: Image du gain (le goûter)
-const gainImg = new Image();
-gainImg.src = 'images/gain.png'; // Assurez-vous que cette image est disponible
-
-// NOUVEAU: Image pour l'objet "mambz"
-const mambzImg = new Image();
-mambzImg.src = 'images/mambz.png'; // ASSUMEZ que vous avez une image 'mambz.png'
-
-// Vérification de la disponibilité du canvas et du contexte
+// VÉRIFICATION CRITIQUE : S'assurer que les éléments sont trouvés
 if (!canvas || !ctx) {
-    console.error("Erreur: Impossible de trouver l'élément Canvas ou son contexte 2D. Veuillez vérifier Page2.html.");
+    console.error("Erreur: Impossible de trouver l'élément Canvas ou son contexte 2D. Le jeu ne peut pas démarrer.");
+    // Empêcher l'exécution du reste du script si le canvas manque
+    throw new Error("Canvas ou Context 2D introuvable.");
 }
 
+// Définition des images et de leur source (Vérifiez la CASSE ici et sur GitHub !)
+const playerImg = new Image();
+playerImg.src = 'perso.png';
+const diplomaImg = new Image();
+diplomaImg.src = 'icone.png';
+const gainImg = new Image();
+gainImg.src = 'gain.png';
+const mambzImg = new Image();
+mambzImg.src = 'mambz.png';
+
+// --- AJOUT IMPORTANT : GESTION DU PRÉ-CHARGEMENT DES IMAGES ---
+const imagesToLoad = [playerImg, diplomaImg, gainImg, mambzImg];
+let imagesLoadedCount = 0;
+
+function initializeGame() {
+    imagesLoadedCount++;
+    
+    // Si toutes les images sont chargées, on lance le jeu
+    if (imagesLoadedCount === imagesToLoad.length) {
+        console.log("Toutes les images sont chargées. Démarrage du jeu.");
+        
+        // Démarrer la génération d'objets uniquement ICI
+        setInterval(spawnDiploma, 2000); 
+        setInterval(spawnArrow, 1500);  
+        setInterval(spawnMambz, 3000);  
+
+        // Lancement sécurisé de la boucle principale
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+// Attacher l'événement 'load' ou 'error' à chaque image
+imagesToLoad.forEach(img => {
+    if (img.complete) {
+        initializeGame(); // Déjà en cache
+    } else {
+        img.addEventListener('load', initializeGame);
+        img.addEventListener('error', () => {
+            console.error(`Erreur 404/Casse : L'image ${img.src} n'a pas pu être chargée. Le jeu démarre sans elle.`);
+            initializeGame(); // Compter l'image comme "traitée" même en erreur
+        });
+    }
+});
+// --- FIN DU PRÉ-CHARGEMENT ---
+
+
 // Constantes du jeu
-const GRAVITY = 0.8 ;          // Force de gravité (NOTE : La gravité a été modifiée dans le Canvas fourni)
+const GRAVITY = 0.8;
 const JUMP_POWER = -20;
-const PLAYER_SPEED = 7;     // Vitesse de déplacement horizontal
-const CANVAS_WIDTH = canvas.width; // Largeur du canvas
-const GROUND_Y = canvas.height - 10; // Position Y du sol
-const DIPLOMA_SPEED = 3;      // Vitesse de défilement des diplômes
+const PLAYER_SPEED = 7;
+const CANVAS_WIDTH = canvas.width;
+const GROUND_Y = canvas.height - 10;
+const DIPLOMA_SPEED = 3;
 const MAMBZ_SPEED = 10;
-const ARROW_SPEED = 7;        // Vitesse de défilement des flèches
-const WIN_SCORE = 10;         // Score cible pour gagner la récompense
-const MAMBZ_SCORE_VALUE = 3;  // NOUVEAU: Valeur de score pour l'objet mambz
+const ARROW_SPEED = 7;
+const WIN_SCORE = 10;
+const MAMBZ_SCORE_VALUE = 3;
 
 // État du jeu
 let score = 0;
 let gameOver = false;
-
-// NOUVEAU: Variables pour l'affichage de la récompense
 let isRewardVisible = false;
 let rewardStartTime = 0;
-const REWARD_DURATION = 1000; // 1000 ms = 1 seconde
-let rewardDrawnAtScore = 0; // Pour s'assurer que la récompense n'apparaît qu'une fois par tranche de 10 points
+const REWARD_DURATION = 1000;
+let rewardDrawnAtScore = 0;
 
 // Objets du jeu
 let player = {
@@ -53,28 +87,24 @@ let player = {
     isJumping: false
 };
 
-let diplomas = []; // Tableau pour stocker les objets à collectionner
-let arrows = [];   // Tableau pour stocker les obstacles
-let mambzItems = []; // NOUVEAU: Tableau pour stocker les objets mambz
+let diplomas = [];
+let arrows = [];
+let mambzItems = [];
 
 // --- GESTION DU PERSONNAGE (Mouvement et Saut) ---
 
 function updatePlayer() {
-    // 1. Appliquer la gravité
     player.yVelocity += GRAVITY;
-    // 2. Mettre à jour la position Y et X
     player.y += player.yVelocity;
-    player.x += player.xVelocity; // Applique le mouvement horizontal
+    player.x += player.xVelocity;
 
-    // 3. Gérer l'atterrissage
     if (player.y + player.height > GROUND_Y) {
         player.y = GROUND_Y - player.height;
         player.yVelocity = 0;
         player.isJumping = false;
     }
 
-    // 4. Gérer les limites horizontales (empêcher le joueur de sortir)
-    if (player.x < 0) { // <<< Correction pour la limite gauche
+    if (player.x < 0) {
         player.x = 0;
     }
     if (player.x + player.width > CANVAS_WIDTH) {
@@ -83,11 +113,10 @@ function updatePlayer() {
 }
 
 function drawPlayer() {
-    // Remplacer le code du carré bleu (fillRect) par drawImage
     if (playerImg.complete) {
         ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
     } else {
-        // Option de secours (affiche un carré tant que l'image n'est pas chargée)
+        // Option de secours au cas où le chargement échoue complètement
         ctx.fillStyle = 'blue';
         ctx.fillRect(player.x, player.y, player.width, player.height);
     }
@@ -108,16 +137,15 @@ function spawnDiploma() {
         y: Math.random() * (canvas.height / 2) + 50,
         width: 50,
         height: 50,
-        type: 'diploma' // Ajout d'un type pour distinguer (utile pour le dessin et la collision)
+        type: 'diploma'
     });
 }
 
-// NOUVEAU: Fonction pour faire apparaître l'objet mambz
 function spawnMambz() {
     mambzItems.push({
         x: canvas.width,
         y: Math.random() * (canvas.height / 2) + 50,
-        width: 200, // Taille légèrement différente
+        width: 200,
         height: 200,
         type: 'mambz'
     });
@@ -136,7 +164,6 @@ function spawnArrow() {
 function updateObjects(array, speed) {
     for (let i = array.length - 1; i >= 0; i--) {
         array[i].x -= speed;
-
         if (array[i].x + array[i].width < 0) {
             array.splice(i, 1);
         }
@@ -145,24 +172,17 @@ function updateObjects(array, speed) {
 
 function drawObjects(array) {
     array.forEach(obj => {
-
-        // DESSIN DES OBSTACLES (TEXTE "HTML ⚡💥")
         if (obj.text) {
-            ctx.fillStyle = 'red'; // Couleur du texte
-            ctx.font = '15px Arial'; // Taille et police
-
-            // On dessine le texte. On utilise 0.75 pour centrer la ligne de base du texte
+            ctx.fillStyle = 'red';
+            ctx.font = '15px Arial';
             ctx.fillText(obj.text, obj.x, obj.y + obj.height * 0.75);
-
-        // DESSIN DES DIPLÔMES (Image)
         } else if (obj.type === 'diploma' && diplomaImg.complete) {
             ctx.drawImage(diplomaImg, obj.x, obj.y, obj.width, obj.height);
-        // NOUVEAU: DESSIN DES MAMBZ (Image)
         } else if (obj.type === 'mambz' && mambzImg.complete) {
             ctx.drawImage(mambzImg, obj.x, obj.y, obj.width, obj.height);
         } else {
-            // Option de secours pour les diplômes/mambz si l'image ne charge pas
-            ctx.fillStyle = obj.type === 'mambz' ? 'orange' : 'yellow'; // Couleur différente pour mambz
+            // Option de secours si l'image ne charge pas
+            ctx.fillStyle = obj.type === 'mambz' ? 'orange' : 'yellow';
             ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
         }
     });
@@ -178,36 +198,34 @@ function checkCollision(rect1, rect2) {
 }
 
 function handleCollisions() {
-    // Fonction utilitaire pour gérer l'ajout de score et la récompense
     const addScoreAndCheckReward = (points) => {
         score += points;
         scoreDisplay.textContent = `Score: ${score}`;
         
-        // Vérifie si le score est un multiple de 10 et si la récompense n'a pas déjà été donnée pour ce score
         if (score > 0 && score % WIN_SCORE === 0 && score > rewardDrawnAtScore) {
             isRewardVisible = true;
-            rewardStartTime = performance.now(); // Démarre le chrono
-            rewardDrawnAtScore = score; // Enregistre le score pour éviter la répétition
+            rewardStartTime = performance.now();
+            rewardDrawnAtScore = score;
         }
     }
 
-    // Collisions avec les Diplômes (Gain de 1 point)
+    // Collisions avec les Diplômes
     for (let i = diplomas.length - 1; i >= 0; i--) {
-        if (checkCollision(player, diplomas[i])) { 
-            addScoreAndCheckReward(1); // Ajout d'un point
+        if (checkCollision(player, diplomas[i])) {
+            addScoreAndCheckReward(1);
             diplomas.splice(i, 1);
         }
     }
 
-    // NOUVEAU: Collisions avec les Mambz (Gain de 3 points)
+    // Collisions avec les Mambz
     for (let i = mambzItems.length - 1; i >= 0; i--) {
         if (checkCollision(player, mambzItems[i])) {
-            addScoreAndCheckReward(MAMBZ_SCORE_VALUE); // Ajout de 3 points
+            addScoreAndCheckReward(MAMBZ_SCORE_VALUE);
             mambzItems.splice(i, 1);
         }
     }
 
-    // Collisions avec les Flèches (Perte de points)
+    // Collisions avec les Flèches
     for (let i = arrows.length - 1; i >= 0; i--) {
         if (checkCollision(player, arrows[i])) {
             score = Math.max(0, score - 1);
@@ -215,36 +233,32 @@ function handleCollisions() {
             arrows.splice(i, 1);
         }
     }
-} // Fin de la fonction handleCollisions()
+}
 
 // --- BOUCLE PRINCIPALE DU JEU ---
 
-function gameLoop(currentTime) { // CORRECTION 1: Ajout de 'currentTime' comme argument
+function gameLoop(currentTime) {
     if (gameOver) {
         return;
     }
 
     // 1. Nettoyer l'écran et dessiner le fond et le sol
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Dessiner le fond (ciel bleu) (NOTE : La couleur a été modifiée dans le Canvas fourni)
-    ctx.fillStyle = '#FFFFCB'; // Jaune très clair
-    ctx.fillRect(0, 0, canvas.width, canvas.height); 
-
-    // Dessiner le sol (maintenant vert) (NOTE : La couleur a été modifiée dans le Canvas fourni)
-    ctx.fillStyle = 'green'; // Vert
+    ctx.fillStyle = '#FFFFCB';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'green';
     ctx.fillRect(0, GROUND_Y, canvas.width, canvas.height - GROUND_Y);
 
-    // 2. Mettre à jour les positions (joueur, diplômes, mambz, flèches)
+    // 2. Mettre à jour les positions
     updatePlayer();
     updateObjects(diplomas, DIPLOMA_SPEED);
-    updateObjects(mambzItems, MAMBZ_SPEED); // NOUVEAU: Mise à jour des mambz (même vitesse que les diplômes)
+    updateObjects(mambzItems, MAMBZ_SPEED);
     updateObjects(arrows, ARROW_SPEED);
 
     // 3. Dessiner tous les éléments
     drawPlayer();
     drawObjects(diplomas);
-    drawObjects(mambzItems); // NOUVEAU: Dessin des mambz
+    drawObjects(mambzItems);
     drawObjects(arrows);
 
     // 4. Vérifier les interactions
@@ -256,21 +270,17 @@ function gameLoop(currentTime) { // CORRECTION 1: Ajout de 'currentTime' comme a
         let opacity = 1;
 
         if (timeElapsed >= REWARD_DURATION) {
-            isRewardVisible = false; // Fin de l'affichage
+            isRewardVisible = false;
         } else {
-            // Commence le fondu après 500ms (la moitié de la durée)
             const fadeStart = REWARD_DURATION * 0.5;
             if (timeElapsed > fadeStart) {
-                // Calcule l'opacité (de 1 à 0)
                 opacity = 1 - (timeElapsed - fadeStart) / (REWARD_DURATION - fadeStart);
             }
-        } // CORRECTION 2: Fermeture manquante du bloc 'else'
+        }
         
         if (isRewardVisible) {
-            ctx.save(); // Sauvegarde l'état actuel du contexte
-            ctx.globalAlpha = opacity; // Applique l'opacité
-
-            // Positionnement au centre du Canvas
+            ctx.save();
+            ctx.globalAlpha = opacity;
             const rewardWidth = 100;
             const rewardHeight = 100;
             const rewardX = (canvas.width / 2) - (rewardWidth / 2);
@@ -278,26 +288,22 @@ function gameLoop(currentTime) { // CORRECTION 1: Ajout de 'currentTime' comme a
 
             ctx.drawImage(gainImg, rewardX, rewardY, rewardWidth, rewardHeight);
             
-            ctx.restore(); // Restaure l'opacité à 1 pour le reste du dessin
+            ctx.restore();
         }
     }
-    // Fin de la gestion de la récompense
-
-    // 5. Continuer la boucle
+    
+    // 5. Continuer la boucle (cette ligne doit TOUJOURS être la dernière action)
     requestAnimationFrame(gameLoop);
 }
 
 // --- GESTION DES CONTRÔLES ---
 
-// Gérer le saut et le mouvement horizontal avec les touches
 document.addEventListener('keydown', (e) => {
-    if (gameOver) return; // Ignore les commandes si le jeu est fini
-
+    if (gameOver) return;
     if (e.code === 'Space') {
         jump();
-        e.preventDefault(); // Empêche le défilement de la page
+        e.preventDefault();
     }
-    // Gérer le mouvement horizontal
     if (e.code === 'ArrowRight') {
         player.xVelocity = PLAYER_SPEED;
     } else if (e.code === 'ArrowLeft') {
@@ -305,23 +311,9 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Arrêter le mouvement lorsque la touche est relâchée
 document.addEventListener('keyup', (e) => {
-    if (gameOver) return; // Ignore les commandes si le jeu est fini
-
+    if (gameOver) return;
     if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
-        // Arrête immédiatement le mouvement horizontal
         player.xVelocity = 0;
     }
 });
-
-// --- INITIALISATION : DÉMARRAGE DU JEU ---
-
-// Génération aléatoire des objets
-setInterval(spawnDiploma, 2000); // NOTE : Revert aux valeurs de l'utilisateur (2000ms)
-setInterval(spawnArrow, 1500);    // NOTE : Revert aux valeurs de l'utilisateur (1500ms)
-setInterval(spawnMambz, 3000);    // NOUVEAU: Fait apparaître un Mambz toutes les 4 secondes (ajustez si besoin)
-
-// Lancement de la boucle principale du jeu
-// gameLoop() est maintenant appelée sans argument initial, performance.now() est géré par requestAnimationFrame
-requestAnimationFrame(gameLoop);
