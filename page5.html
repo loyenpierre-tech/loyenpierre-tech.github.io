@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -21,16 +21,18 @@
    
     </div> 
     <div class="principale">
-    <div class="image-acceuil">
-            <img class="image-acceuil" src="images/livre.png">
-    </div>  
+   
+       <p  title="clique ici pour voir"
+        id="paragraphe-smiley" onclick=changerSmiley()>😊 heureux
+    </p>
+    
         <div class="conteneur-boutons">
             <a title="demande de l'aide à Gemini"
-                href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_self">
+                href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_blank">
                 AU SECOURS !!!<br>
             </a>
             <a title="reprends la lecon ici"
-                href="https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3" class="bouton-help" target="_self">
+                href="https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3" class="bouton-help" target="_blank">
                 Openclassroom<br>
             </a>   
             <a  title="viens jouer"
@@ -56,15 +58,31 @@
                         <a title="page 6"
             href="page6.html" class="bouton-help" targer="_self">
              taches
-
+            </a>
+            <a title="index"
+                        href="index.html" class="bouton-help" targer="_self">
+             index
+            </a>
         </div>
     </div>
-    </div>
+    
+            <script>
+    // 1. Fonction pour le smiley : change entre heureux et triste
+        function changerSmiley() {
+        const paragraphe = document.getElementById('paragraphe-smiley');
+        let contenu = paragraphe.innerHTML;
+        // Vérifie si le contenu contient le smiley heureux (😊)
+        if (contenu.includes('😊 heureux')) {
+            // Si oui, le remplace par le smiley triste (😢)
+            paragraphe.innerHTML = contenu.replace('😊 heureux', '😢 triste');
+        } else  {
+            // Sinon (s'il est déjà triste), le remplace par le smiley heureux (😊)
+            paragraphe.innerHTML = contenu.replace('😢 triste', '😊 heureux');
+        }
+        }
+      
+    </script>
 
-</body>
-
-   
-</main>
 <footer>
     
         <a
@@ -75,8 +93,5 @@
         <p>
             copyright 2025
         </p>
-       
 </footer>
-
 </body>
-</html>
