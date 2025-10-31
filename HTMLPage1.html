@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src = "compter.js"></script>
+</head>
+
+<body>
+<p>la date du jour est : <span id=dateAffichee></span> </p>
+<p style = text-decoration:underline;>
+    Ma position est : <br>
+    Latitude : <span id="latitude">N/A</span> <br>
+    Longitude : <span id="longitude">N/A</span>
+</p>
+<script>
+const dateActuelle = new Date();
+const jourDuMois = dateActuelle.getDate();
+const numeroDuMois = dateActuelle.getMonth()+1;
+const annee = dateActuelle.getFullYear();
+let dateDuJour = jourDuMois + "/" + numeroDuMois + "/" + annee
+document.getElementById("dateAffichee").innerHTML = dateDuJour;
+
+function afficherLocalisation() {
+        if (navigator.geolocation) {
+            // 1. Demander la position. Deux fonctions (succès, erreur) sont passées en arguments.
+            navigator.geolocation.getCurrentPosition(
+                afficherSucces, 
+                afficherErreur
+            );
+        } else {
+            // 2. Si le navigateur ne supporte pas la géolocalisation.
+            document.getElementById("latitude").innerHTML = "Géolocalisation non supportée par ce navigateur.";
+            document.getElementById("longitude").innerHTML = "Géolocalisation non supportée par ce navigateur.";
+        }
+    }
+
+    // Fonction de Succès (appelée quand la position est trouvée)
+    function afficherSucces(position) {
+        const lat = position.coords.latitude;
+        const long = position.coords.longitude;
+
+        // 3. Afficher les résultats dans les balises HTML
+        document.getElementById("latitude").innerHTML = lat.toFixed(6); // Affiche 6 décimales pour la précision
+        document.getElementById("longitude").innerHTML = long.toFixed(6);
+    }
+
+    // Fonction d'Erreur (appelée en cas de problème)
+    function afficherErreur(error) {
+        let message;
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                message = "L'utilisateur a refusé la demande de Géolocalisation.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                message = "Information de localisation non disponible.";
+                break;
+            case error.TIMEOUT:
+                message = "La demande a expiré.";
+                break;
+            default:
+                message = "Une erreur inconnue s'est produite.";
+                break;
+        }
+        document.getElementById("latitude").innerHTML = message;
+        document.getElementById("longitude").innerHTML = "Erreur.";
+    }
+
+    // 4. Lancer la fonction
+    afficherLocalisation();
+</script>
+
+</body>
+</html>

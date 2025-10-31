@@ -1,12 +1,17 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Formation </title>
     <link rel="icon" type="image/png" href="images/icone.png">
     <link rel="stylesheet" href="StyleSheet1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src = "compter.js"></script>
 </head>
-<body>
+<body onload = "CompterJusquaDix();">
 <main>
     <div class="debut">
         <h1>
@@ -20,7 +25,7 @@
                 </h3>
    
     </div> 
-    <div class="principale">  
+    <div class="principale"> 
         <div class="conteneur-boutons">
             <a title="demande de l'aide à Gemini"
                 href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_blank">
@@ -55,37 +60,23 @@
              taches
             </a>
             <a title="index"
-                        href="index.html" class="bouton-help" targer="_self">
+                        href="index.html" class="bouton-help" target="_self">
              index
             </a>
         </div>
-        <p  title="clique ici pour voir"
-        id="paragraphe-smiley" onmouseover=changerSmiley()>😊 heureux
-        </p>
-    </div>
-    
-            <script>
-    // 1. Fonction pour le smiley : change entre heureux et triste
-        function changerSmiley() {
-        const paragraphe = document.getElementById('paragraphe-smiley');
-        let contenu = paragraphe.innerHTML;
-        // Vérifie si le contenu contient le smiley heureux (😊)
-        if (contenu.includes('😊 heureux')) {
-            // Si oui, le remplace par le smiley triste (😢)
-            paragraphe.innerHTML = contenu.replace('😊 heureux', '😢 triste');
-        } else  {
-            // Sinon (s'il est déjà triste), le remplace par le smiley heureux (😊)
-            paragraphe.innerHTML = contenu.replace('😢 triste', '😊 heureux');
-        }
-        }
-      
-    </script>
+ 
+<h2> comptons jusqu'a 10 avec Javascript! </h2>
+<br>
+<div>
+<p id="leCompteur"></p>
+</div>
+<br>
+</div>
+
+</body>
 
 <footer>
-            <a class="boutonMailto" href="mailto:pierre.formation@example.com?subject=Question%20sur%20la%20page%20HTML&body=Bonjour%20Pierre%2C%0A%0AJe%20souhaiterais%20plus%20d'informations%20concernant%20les%20fonctions%20de%20cette%20page.">
-        Demande de contact </a>
-   
-        <a
+    
         <a
             href="https://www.facebook.com" class="mentions-legales" target="=_self">
             Pierre LOYEN
@@ -95,4 +86,5 @@
             copyright 2025
         </p>
 </footer>
-</body>
+
+
