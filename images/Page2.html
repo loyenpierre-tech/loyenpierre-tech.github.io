@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Formation </title>
     <link rel="icon" type="image/png" href="images/icone.png">
     <link rel="stylesheet" href="StyleSheet1.css">
-    <script src="compter.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 <main>
@@ -19,23 +21,16 @@
                 <h3>
                     Formation commencée le 23/10/2025
                 </h3>
-                <p>la date du jour est : <span id=dateAffichee></span> </p>
-
-<p style = text-decoration:underline;>
-    Ma position est : <br>
-    Latitude : <span id="latitude">N/A</span> <br>
-    Longitude : <span id="longitude">N/A</span>
-</p>
+   
     </div> 
-
-    <div class="principale">
+    <div class="principale"> 
         <div class="conteneur-boutons">
             <a title="demande de l'aide à Gemini"
-                href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_self">
+                href="https://gemini.google.com/app?hl=fr" class="bouton-help" target="_blank">
                 AU SECOURS !!!<br>
             </a>
             <a title="reprends la lecon ici"
-                href="https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3" class="bouton-help" target="_self">
+                href="https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3" class="bouton-help" target="_blank">
                 Openclassroom<br>
             </a>   
             <a  title="viens jouer"
@@ -47,50 +42,57 @@
             Golum
             </a>
             <a title="page 4"
-            href="page3.html" class="bouton-help" target="_self">
+            href="page3.html" class="bouton-help" targer="_self">
             texte
             </a>
             <a title="page 4"
             href="page4.html" class="bouton-help" targer="_self">
             tableaux
             </a>
-            <a title="page 5"
+                        <a title="page 5"
             href="page5.html" class="bouton-help" targer="_self">
             bouton heureux
             </a>
                         <a title="page 6"
             href="page6.html" class="bouton-help" targer="_self">
              taches
-             </a>
-                         <a title="page 4"
-            href="compter.html" class="compter" targer="_self">
-            compter
+            </a>
+            <a title="index"
+                        href="index.html" class="bouton-help" targer="_self">
+             index
             </a>
         </div>
-        <div class="image-acceuil">
-            <img class="image-acceuil" src="images/livre.png">
-        </div>  
+            <div class="Game">
+    <div class="nomgame">
+   <h2 style="font-family: 'Press Start 2P', cursive;">👾 Choppe la Mambz 👾</h2>
     </div>
-  </main>  
-     
+            <canvas id="gameCanvas" width="800" height="400" style="border: 4px solid black; display: block; margin: 20px auto;">
+        Votre navigateur ne supporte pas Canvas.
+    </canvas>
+    <div id="scoreDisplay" style="text-align:center;color:black;font-family: 'Press Start 2P', cursive; font-size: 30px;font-weight:bold; margin-top: 10px;border:5px solid black;">
+        Score: 0
+    </div>  
+    <script src="game.js"></script>
+    </div> 
+    </div>
+    </div>
+
+</body>
 
    
-
-
-
-   
-       <footer>      
-        <a class="boutonMailto" href="mailto:pierre.formation@example.com?subject=Question%20sur%20la%20page%20HTML&body=Bonjour%20Pierre%2C%0A%0AJe%20souhaiterais%20vous%20feliciter%20pour%20ce%20merveilleux%20site%20web.">
+</main>
+<footer>
+            <a class="boutonMailto" href="mailto:pierre.formation@example.com?subject=Question%20sur%20la%20page%20HTML&body=Bonjour%20Pierre%2C%0A%0AJe%20souhaiterais%20plus%20d'informations%20concernant%20les%20fonctions%20de%20cette%20page.">
         Demande de contact </a>
    
+        <a
         <a
             href="https://www.facebook.com" class="mentions-legales" target="=_self">
             Pierre LOYEN
         </a>
+
         <p>
             copyright 2025
-        </p>  
-
+        </p>
 </footer>
- </body>
-</html>
+</body>
